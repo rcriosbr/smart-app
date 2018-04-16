@@ -1,0 +1,320 @@
+<div class="ui-g dashboard">
+    <div class="ui-g-12 ui-md-3">
+        <div class="overview-box overview-box-1">
+            <div class="overview-box-header"></div>
+            <div class="overview-box-content">
+                <div class="overview-box-icon">
+                    <i class="material-icons">list</i>
+                </div>
+                <div class="overview-box-title">Managed Portfolios</div>
+                <div class="overview-box-count">{{managedPortfolios}}</div>
+            </div>
+        </div>
+    </div>
+    <div class="ui-g-12 ui-md-3">
+        <div class="overview-box overview-box-2">
+            <div class="overview-box-header"></div>
+            <div class="overview-box-content">
+                <div class="overview-box-icon">
+                    <i class="material-icons">attach_money</i>
+                </div>
+                <div class="overview-box-title">Portfolios Value</div>
+                <div class="overview-box-count">{{rootPortfoliosValue|number:'1.2-2':'pt'}}</div>
+            </div>
+        </div>
+    </div>
+    <div class="ui-g-12 ui-md-3">
+        <div class="overview-box overview-box-3">
+            <div class="overview-box-header"></div>
+            <div class="overview-box-content">
+                <div class="overview-box-icon">
+                    <i class="material-icons">insert_drive_file</i>
+                </div>
+                <div class="overview-box-title">Files Sycned</div>
+                <div class="overview-box-count">28</div>
+            </div>
+        </div>
+    </div>
+    <div class="ui-g-12 ui-md-3">
+        <div class="overview-box overview-box-4">
+            <div class="overview-box-header"></div>
+            <div class="overview-box-content">
+                <div class="overview-box-icon">
+                    <i class="material-icons">supervisor_account</i>
+                </div>
+                <div class="overview-box-title">Users Online</div>
+                <div class="overview-box-count">256</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ui-g-12 ui-md-4">
+        <p-panel header="Portfolios Allocation">
+            <p-table #dtPA [value]="secondLevelPortfolios" [paginator]="false" [rows]="5">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th class="ui-p-1" style="font-weight: bold; width: 50%;">Name</th>
+                        <th class="ui-p-3" style="font-weight: bold; width: 25%;">Value</th>
+                        <th class="ui-p-1" style="font-weight: bold; width: 25%;">Share</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-portfolio>
+                    <tr>
+                        <td class="ui-p-1 topFive">{{portfolio.shortName}}</td>
+                        <td class="ui-p-3 topFive" style="text-align: right;">{{portfolio.value|number:'1.2-2':'pt'}}</td>
+                        <td class="ui-p-1 topFive" style="text-align: center;">
+                            <span>{{ portfolio.facts.share|number:'1.2-2':'pt' }}%</span>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td class="ui-p-1" colspan="4" style="text-align: center; font-weight: bold;">
+                            <span i18n="portfolioListEmpty">There are no portfolios.</span>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </p-panel>
+    </div>
+    <div class="ui-g-12 ui-md-8">
+        <p-panel header="Top 5 Portfolios by Value">
+            <p-table #dt [value]="top5Portfolios" [paginator]="false" [rows]="10">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th class="ui-p-1" style="font-weight: bold; width: 50%;">Name</th>
+                        <th class="ui-p-6" style="font-weight: bold; width: 15%">Last Update</th>
+                        <th class="ui-p-1" style="font-weight: bold; width: 15%;">Value</th>
+                        <th class="ui-p-3" style="font-weight: bold; width: 20%;">Trend</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-portfolio>
+                    <tr>
+                        <td class="ui-p-1 topFive">{{portfolio.shortName}}</td>
+                        <td class="ui-p-6 topFive" style="text-align: center;">{{portfolio.lastUpdateDate|date:"dd/MM/yy"}}</td>
+                        <td class="ui-p-1 topFive" style="text-align: right;">{{portfolio.value|number:'1.2-2':'pt'}}</td>
+                        <td class="ui-p-3 topFive" style="text-align: center;">
+                            <div class="portfolio-trend-{{ portfolio.facts.trendType | lowercase}}">
+                                <i class="material-icons">trending_{{ portfolio.facts.trendType | lowercase }}</i>
+                                <span>{{ portfolio.facts.variation|number:'1.2-2':'pt' }}%</span>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td class="ui-p-1" colspan="4" style="text-align: center; font-weight: bold;">
+                            <span i18n="portfolioListEmpty">There are no portfolios.</span>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </p-panel>
+    </div>
+
+    <div class="ui-g-12 ui-md-6">
+        <div class="card">
+            <p-panel header="Profitability">
+                <div style="overflow:auto">
+                    <p-chart type="line" [data]="chartDataProfitability" [options]="chartOptionsProfitability"></p-chart>
+                </div>
+            </p-panel>
+        </div>
+    </div>
+    <div class="ui-g-12 ui-md-6">
+        <div class="card">
+            <p-panel header="{{ chartDataEvolutionTitle }}">
+                <div style="overflow:auto">
+                    <p-chart type="line" [data]="chartDataEvolution" [options]="chartOptions"></p-chart>
+                </div>
+            </p-panel>
+        </div>
+    </div>
+
+    <div class="ui-g-12 ui-lg-4">
+        <div class="ui-g-12">
+            <div class="user-card card">
+                <div class="user-card-header">
+                    <img src="assets/layout/images/dashboard/usercard.png" library="serenity-layout" width="100" />
+                </div>
+                <div class="user-card-content">
+                    <img src="assets/layout/images/avatar.png" library="serenity-layout" />
+                    <button pButton type="button" icon="ui-icon-settings" class="secondary-btn"></button>
+
+                    <div class="user-card-name">
+                        <span>Wendy Lorina</span>
+                    </div>
+
+                    <div class="user-detail">
+                        <ul>
+                            <li class="clearfix">
+                                <i class="material-icons">assignment</i>
+                                <span class="project-title">Tasks</span>
+                                <span class="project-detail">3 open</span>
+                                <div class="project-progressbar">
+                                    <div class="project-progressbar-value" style="width: 50%"></div>
+                                </div>
+                            </li>
+                            <li class="clearfix">
+                                <i class="material-icons">attach_money</i>
+                                <span class="project-title">Revenue</span>
+                                <span class="project-detail">+20%</span>
+                                <div class="project-progressbar">
+                                    <div class="project-progressbar-value" style="width: 20%"></div>
+                                </div>
+                            </li>
+                            <li class="clearfix">
+                                <i class="material-icons">payment</i>
+                                <span class="project-title">Payments</span>
+                                <span class="project-detail">24 new</span>
+                                <div class="project-progressbar">
+                                    <div class="project-progressbar-value" style="width: 65%"></div>
+                                </div>
+                            </li>
+                            <li class="clearfix">
+                                <i class="material-icons">business_center</i>
+                                <span class="project-title">Clients</span>
+                                <span class="project-detail">+80%</span>
+                                <div class="project-progressbar">
+                                    <div class="project-progressbar-value" style="width: 80%"></div>
+                                </div>
+                            </li>
+                            <li class="clearfix">
+                                <i class="material-icons">pie_chart</i>
+                                <span class="project-title">Turnover</span>
+                                <span class="project-detail">+40%</span>
+                                <div class="project-progressbar">
+                                    <div class="project-progressbar-value" style="width: 40%"></div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui-g-12 ui-lg-6 ui-g-nopad">
+            <div class="ui-g-12  task-list">
+                <p-panel header="Tasks">
+                    <button pButton type="button" icon="ui-icon-menu" class="secondary-btn" (click)="menu.toggle($event)"></button>
+                    <p-menu #menu popup="popup" [model]="items"></p-menu>
+
+                    <ul class="task-list-container">
+                        <li>
+                            <p-checkbox binary="true"></p-checkbox>
+                            <span class="task-name">Sales Reports</span>
+                            <i class="material-icons">shop</i>
+                        </li>
+                        <li>
+                            <p-checkbox binary="true"></p-checkbox>
+                            <span class="task-name">Pay Invoices</span>
+                            <i class="material-icons">credit_card</i>
+                        </li>
+                        <li>
+                            <p-checkbox binary="true"></p-checkbox>
+                            <span class="task-name">Dinner with Tony</span>
+                            <i class="material-icons">local_dining</i>
+                        </li>
+                        <li>
+                            <p-checkbox binary="true"></p-checkbox>
+                            <span class="task-name">Client Meeting</span>
+                            <i class="material-icons">alarm</i>
+                        </li>
+                        <li>
+                            <p-checkbox binary="true"></p-checkbox>
+                            <span class="task-name">New Theme</span>
+                            <i class="material-icons">palette</i>
+                        </li>
+                        <li>
+                            <p-checkbox binary="true"></p-checkbox>
+                            <span class="task-name">Flight Ticket</span>
+                            <i class="material-icons">flight</i>
+                        </li>
+                        <li>
+                            <p-checkbox binary="true"></p-checkbox>
+                            <span class="task-name">Guide Translation</span>
+                            <i class="material-icons">translate</i>
+                        </li>
+                    </ul>
+                </p-panel>
+            </div>
+        </div>
+
+        <div class="ui-g-12 ui-lg-6 ui-g-nopad  contact-form">
+            <p-panel header="Contact Us">
+                <div class="ui-g">
+                    <div class="ui-g-12">
+                        <p-dropdown [options]="cities" [autoWidth]="false" [(ngModel)]="selectedCity"></p-dropdown>
+                    </div>
+                    <div class="ui-g-12">
+                        <span class="md-inputfield">
+                            <input id="name" type="text" pInputText />
+                            <label for="name">Name</label>
+                        </span>
+                    </div>
+                    <div class="ui-g-12">
+                        <span class="md-inputfield">
+                            <input id="age" type="text" pInputText />
+                            <label for="age">Age</label>
+                        </span>
+                    </div>
+                    <div class="ui-g-12">
+                        <span class="md-inputfield">
+                            <input id="message" type="text" pInputText />
+                            <label for="message">Message</label>
+                        </span>
+                    </div>
+                </div>
+                <button type="button" label="Send" icon="ui-icon-send" pButton></button>
+            </p-panel>
+        </div>
+        <div class="ui-g-12 map">
+            <p-panel header="Map">
+                <img src="assets/layout/images/dashboard/map.png" library="serenity-layout" />
+            </p-panel>
+        </div>
+        <div>
+
+            <div class="ui-g-12 status-bars">
+                <div class="card">
+                    <ul>
+                        <li>
+                            <div class="status-bar status-bar-1">
+                                <div class="status-bar-value" style="width:22%">22%</div>
+                            </div>
+                            <span>Users</span>
+                            <i class="material-icons">&#xE853;</i>
+                        </li>
+                        <li>
+                            <div class="status-bar status-bar-2">
+                                <div class="status-bar-value" style="width:78%">78%</div>
+                            </div>
+                            <span>Confirmed</span>
+                            <i class="material-icons">&#xE86C;</i>
+                        </li>
+                        <li>
+                            <div class="status-bar status-bar-3">
+                                <div class="status-bar-value" style="width:51%">51%</div>
+                            </div>
+                            <span>Defects</span>
+                            <i class="material-icons">&#xE868;</i>
+                        </li>
+                        <li>
+                            <div class="status-bar status-bar-4">
+                                <div class="status-bar-value" style="width:68%">68%</div>
+                            </div>
+                            <span>Issues</span>
+                            <i class="material-icons">&#xE8B2;</i>
+                        </li>
+                        <li>
+                            <div class="status-bar status-bar-5">
+                                <div class="status-bar-value" style="width:80%">80%</div>
+                            </div>
+                            <span>Searches</span>
+                            <i class="material-icons">&#xE8B6;</i>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

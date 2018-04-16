@@ -1,0 +1,49 @@
+<div class="ui-g">
+  <div class="ui-g-12">
+    <div class="card">
+      <p-table #dt [columns]="cols" [value]="portfolios" [paginator]="true" [rows]="10" [globalFilterFields]="['name','master.name','creationDate','lastUpdateDate','quotes','quoteValue','value']">
+        <ng-template pTemplate="caption">
+          <div style="text-align: right">
+            <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+            <input id="iFilter" type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')"
+              style="width:auto; border-color: white;">
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th class="ui-p-1" style="width: 15%;">Name</th>
+            <th class="ui-p-3" style="width: 15%;">Master</th>
+            <th class="ui-p-5">Creation Date</th>
+            <th class="ui-p-6">Last Update</th>
+            <th class="ui-p-2">Quotes</th>
+            <th class="ui-p-3">Quote Value</th>
+            <th class="ui-p-1">Value</th>
+            <th class="ui-p-6">Actions</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-portfolio>
+          <tr>
+            <td class="ui-p-1">{{portfolio.name}}</td>
+            <td class="ui-p-3">{{portfolio.master != null ?portfolio.master.name:''}}</td>
+            <td class="ui-p-5" style="text-align: center;">{{portfolio.creationDate|date:"dd/MM/yy"}}</td>
+            <td class="ui-p-6" style="text-align: center;">{{portfolio.lastUpdateDate|date:"dd/MM/yy"}}</td>
+            <td class="ui-p-2" style="text-align: right;">{{portfolio.quotes|number:'1.5-5':'pt'}}</td>
+            <td class="ui-p-3" style="text-align: right;">{{portfolio.quoteValue|number:'1.5-5':'pt'}}</td>
+            <td class="ui-p-1" style="text-align: right;">{{portfolio.value|number:'1.2-2':'pt'}}</td>
+            <td class="ui-p-6" style="text-align: center;">
+              <button type="button" icon="ui-icon-add" pButton [routerLink]="['/portfolio-add/'+portfolio.id]"></button>
+              <button type="button" icon="ui-icon-details" pButton [routerLink]="['/portfolio-add/'+portfolio.id]"></button>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+          <tr>
+            <td class="ui-p-1" colspan="8" style="text-align: center; font-weight: bold;">
+              <span i18n="portfolioListEmpty">There are no portfolios.</span>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>

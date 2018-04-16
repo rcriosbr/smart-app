@@ -1,0 +1,46 @@
+<div class="ui-g ui-fluid">
+  <div class="ui-g-12 ui-md-12 ui-lg-12">
+    <div class="card card-w-title" style="text-align: center;">
+      <form #dealForm="ngForm" (ngSubmit)="save(dealForm.value)">
+        <div class="ui-g form-group">
+          <div class="ui-g-12 ui-md-4">
+            <span class="md-inputfield">
+              <p-calendar id="showIcon" [showIcon]="true" placeholder="Deal Date" name="date" #date [(ngModel)]="deal.date" dateFormat="dd/mm/yy"
+                required></p-calendar>
+            </span>
+          </div>
+          <div class="ui-g-12 ui-md-4">
+            <div ngModelGroup="portfolio">
+              <input type="hidden" pInputText name="id" #id [(ngModel)]="selectedPortfolio.id">
+              <p-dropdown id="ddPortfolios" [options]="portfolios" [(ngModel)]="selectedPortfolio" [autoWidth]="false" [ngModelOptions]="{standalone: true}"></p-dropdown>
+            </div>
+          </div>
+          <div class="ui-g-12 ui-md-4">
+            <p-dropdown id="ddTypes" [options]="types" [(ngModel)]="type" [autoWidth]="false" name="type"></p-dropdown>
+          </div>
+          <div class="ui-g-12 ui-md-4">
+            <span class="md-inputfield">
+              <input type="text" pInputText required name="quoteValue" #quoteValue [(ngModel)]="deal.quoteValue">
+              <label>Quote Value</label>
+            </span>
+          </div>
+          <div class="ui-g-12 ui-md-4">
+            <span class="md-inputfield">
+              <input type="text" pInputText required name="quotes" #quotes [(ngModel)]="deal.quotes">
+              <label>Quotes</label>
+            </span>
+          </div>
+          <div class="ui-g-12 ui-md-4">
+            <span class="md-inputfield">
+              <input type="text" pInputText required name="value" #value [(ngModel)]="deal.value">
+              <label>Value</label>
+            </span>
+          </div>
+        </div>
+        <div style="text-align: center;">
+          <button type="submit" label="Salvar" pButton icon="ui-icon-save" [disabled]="!dealForm.form.valid" style="width: auto;"></button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

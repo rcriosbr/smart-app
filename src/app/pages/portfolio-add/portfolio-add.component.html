@@ -1,0 +1,53 @@
+<div class="ui-g ui-fluid">
+  <div class="ui-g-12 ui-md-12 ui-lg-12">
+    <div class="card card-w-title" style="text-align: center;">
+      <form #portfolioForm="ngForm" (ngSubmit)="save(portfolioForm.value)">
+        <input type="hidden" name="id" #id [(ngModel)]="portfolio.id">
+        <div class="ui-g form-group">
+          <div class="ui-g-12 ui-md-4">
+            <span class="md-inputfield">
+              <input type="text" pInputText required name="name" #name [(ngModel)]="portfolio.name">
+              <label>Name</label>
+            </span>
+          </div>
+          <div class="ui-g-12 ui-md-4">
+            <span class="md-inputfield">
+              <input type="text" pInputText required name="quoteValue" #quoteValue [(ngModel)]="portfolio.quoteValue">
+              <label>Quote Value</label>
+            </span>
+          </div>
+          <div class="ui-g-12 ui-md-4">
+            <span class="md-inputfield">
+              <input type="text" pInputText required name="quotes" #quotes [(ngModel)]="portfolio.quotes">
+              <label>Quotes</label>
+            </span>
+          </div>
+          <div class="ui-g-12 ui-md-4">
+            <span class="md-inputfield">
+              <input type="text" pInputText required name="value" #value [(ngModel)]="portfolio.value">
+              <label>Value</label>
+            </span>
+          </div>
+          <div class="ui-g-12 ui-md-4">
+            <span class="md-inputfield">
+              <p-calendar id="showIcon" [showIcon]="true" placeholder="Creation Date" name="creationDate" #creationDate [(ngModel)]="portfolio.creationDate"
+                dateFormat="dd/mm/yy" required></p-calendar>
+            </span>
+          </div>
+          <div class="ui-g-12 ui-md-4">
+            <div ngModelGroup="master">
+              <input type="hidden" pInputText name="id" #id [(ngModel)]="masterPortfolio.id">
+              <span class="md-inputfield">
+                <input type="text" pInputText name="name" #name [(ngModel)]="masterPortfolio.name">
+                <label>Master Portfolio</label>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div style="text-align: center;">
+          <button type="submit" label="Salvar" pButton icon="ui-icon-clear" [disabled]="!portfolioForm.form.valid" style="width: auto;"></button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
